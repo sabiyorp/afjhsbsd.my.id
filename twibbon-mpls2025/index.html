@@ -221,7 +221,7 @@
 
   <div class="controls">
     <label for="zoom">
-      <input type="range" id="zoom" min="0.2" max="3" step="0.01" value="1.2" />
+      <input type="range" id="zoom" min="0.5" max="4" step="0.01" />
       Zoom: <span id="zoomValue">1.00</span>
     </label>
 
@@ -246,7 +246,7 @@
     const frameImage = new Image();
     frameImage.src = 'frame.png';
 
-    const baseScale = 1.2;
+    const baseScale = 1;
     let scale = baseScale;
     let offsetX = 0;
     let offsetY = 0;
@@ -261,7 +261,9 @@
       reader.onload = (event) => {
         userImage = new Image();
         userImage.onload = () => {
-          scale = baseScale;
+          const scaleX = canvas.width / userImage.width;
+          const scaleY = canvas.height / userImage.height;
+          scale = Math.max(scaleX, scaleY) * 1.2; // Fit + 20% zoom
           offsetX = 0;
           offsetY = 0;
           zoomSlider.value = scale;
