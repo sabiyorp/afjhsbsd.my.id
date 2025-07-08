@@ -52,6 +52,12 @@
       align-items: center; gap: 16px;
       width: 100%; padding: 0 16px;
     }
+    .controls p {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
     label {
       font-weight: 500; color: #333;
       display: flex; flex-direction: column;
@@ -67,6 +73,7 @@
     .button-group {
       display: flex; gap: 10px;
       flex-wrap: wrap; justify-content: center;
+      margin-bottom: 60px;
     }
     button {
       background-color: #1976d2;
@@ -110,9 +117,10 @@
   </div>
 
   <div class="controls">
+    <p>Pengaturan</p>
     <label for="zoom">
+      Zoom: <span id="zoomValue">100%</span>
       <input type="range" id="zoom" min="0.2" max="3" step="0.01" value="1.2" />
-      Zoom: <span id="zoomValue">1.00</span>
     </label>
 
     <div class="button-group">
@@ -178,7 +186,7 @@
             offsetX = 0;
             offsetY = 0;
             zoomSlider.value = scale;
-            zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+            zoomValueLabel.textContent = Math.round((scale / baseScale) * 100) + '%';
             draw();
           };
           userImage.src = offCanvas.toDataURL('image/jpeg', 0.9);
@@ -190,7 +198,7 @@
 
     zoomSlider.addEventListener('input', () => {
       scale = parseFloat(zoomSlider.value);
-      zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+      zoomValueLabel.textContent = Math.round((scale / baseScale) * 100) + '%';
       draw();
     });
 
@@ -276,7 +284,7 @@
       offsetX = 0;
       offsetY = 0;
       zoomSlider.value = scale;
-      zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+      zoomValueLabel.textContent = Math.round((scale / baseScale) * 100) + '%';
       upload.value = "";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
