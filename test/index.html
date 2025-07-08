@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,103 +9,180 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
-      margin: 0; padding: 0;
-      display: flex; flex-direction: column; align-items: center;
-      min-height: 100vh; text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
       overflow-x: hidden;
     }
-    .logo { width: 120px; margin-top: 20px; }
-    h1 { font-size: 28px; color: #1976d2; margin: 10px 0; }
+
+    .logo {
+      width: 120px;
+      margin-top: 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #1976d2;
+      margin: 10px 0;
+    }
+
     .warning {
-      background-color: #fff3cd; color: #856404;
-      padding: 10px 15px; border-radius: 8px;
+      background-color: #fff3cd;
+      color: #856404;
+      padding: 10px 15px;
+      border-radius: 8px;
       border: 1px solid #ffeeba;
-      font-weight: 600; max-width: 90%;
+      font-weight: 600;
+      max-width: 90%;
       margin: 15px auto;
     }
+
     input[type="file"] {
-      margin: 10px 0; padding: 10px;
+      margin: 10px 0;
+      padding: 10px;
       border: 2px dashed #90caf9;
       background-color: #f1f8ff;
-      border-radius: 8px; cursor: pointer;
+      border-radius: 8px;
+      cursor: pointer;
     }
+
     .canvas-container {
       position: relative;
-      width: 90vw; max-width: 360px;
+      width: 90vw;
+      max-width: 360px;
       aspect-ratio: 1 / 1;
       border: 2px solid #bbdefb;
-      border-radius: 12px; overflow: hidden;
+      border-radius: 12px;
+      overflow: hidden;
       background: #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       touch-action: none;
     }
+
     canvas {
-      width: 100%; height: 100%;
-      display: block; background: #f5f5f5;
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #f5f5f5;
     }
+
     .controls {
       margin-top: 20px;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 16px;
-      width: 100%; padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      padding: 0 16px;
     }
+
     .controls p {
       margin: 0;
       font-size: 16px;
       font-weight: 600;
       color: #333;
     }
+
     label {
-      font-weight: 500; color: #333;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 8px;
-      width: 100%; max-width: 360px;
+      font-weight: 500;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 360px;
       margin: auto;
     }
+
     input[type="range"] {
       width: 100%;
       accent-color: #1976d2;
       cursor: pointer;
     }
+
     .button-group {
-      display: flex; gap: 10px;
-      flex-wrap: wrap; justify-content: center;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
       margin-bottom: 60px;
     }
+
     button {
       background-color: #1976d2;
-      color: white; font-size: 16px;
-      font-weight: 600; padding: 10px 18px;
-      border: none; border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
       transition: background 0.2s;
-      display: flex; align-items: center;
+      display: flex;
+      align-items: center;
       gap: 6px;
     }
-    button:hover { background-color: #1565c0; }
+
+    button:hover {
+      background-color: #1565c0;
+    }
+
     #reset {
       background-color: #ef5350;
     }
+
     #reset:hover {
       background-color: #c62828;
     }
+
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
       font-size: 20px;
     }
+
     @media (max-width: 480px) {
-      h1 { font-size: 22px; }
-      .warning { font-size: 14px; }
-      button { font-size: 14px; padding: 8px 14px; }
-      input[type="range"] { height: 36px; }
+      h1 {
+        font-size: 22px;
+      }
+
+      .warning {
+        font-size: 14px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 8px 14px;
+      }
+
+      input[type="range"] {
+        height: 36px;
+      }
+    }
+
+    .zoom-label {
+      font-weight: 500;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
     }
   </style>
 </head>
+
 <body>
   <img src="logo.png" alt="Logo" class="logo" />
   <h1>Twibbon MPLS 2025</h1>
@@ -118,9 +196,10 @@
 
   <div class="controls">
     <p>Pengaturan</p>
-    <label for="zoom">
+    <label for="zoom" class="zoom-label">
       Zoom: <span id="zoomValue">100%</span>
-      <input type="range" id="zoom" min="0.2" max="3" step="0.01" value="1.2" />
+    </label>
+    <input type="range" id="zoom" min="0" max="100" step="1" value="100" />
     </label>
 
     <div class="button-group">
@@ -197,10 +276,11 @@
     });
 
     zoomSlider.addEventListener('input', () => {
-      scale = parseFloat(zoomSlider.value);
-      zoomValueLabel.textContent = Math.round((scale / baseScale) * 100) + '%';
+      scale = (parseFloat(zoomSlider.value) / 100) * baseScale;
+      zoomValueLabel.textContent = zoomSlider.value + '%';
       draw();
     });
+
 
     canvas.addEventListener('mousedown', (e) => {
       dragging = true;
@@ -296,4 +376,5 @@
     frameImage.onload = () => draw();
   </script>
 </body>
+
 </html>
