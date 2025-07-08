@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Twibbon MPLS 2025</title>
+  <link rel="icon" type="image/x-icon" href="https://afjhsbsd.my.id/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
+      margin: 0; padding: 0;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; text-align: center;
+      overflow-x: hidden;
+    }
+    .logo { width: 120px; margin-top: 20px; }
+    h1 { font-size: 28px; color: #1976d2; margin: 10px 0; }
+    .warning {
+      background-color: #fff3cd; color: #856404;
+      padding: 10px 15px; border-radius: 8px;
+      border: 1px solid #ffeeba;
+      font-weight: 600; max-width: 90%;
+      margin: 15px auto;
+    }
+    input[type="file"] {
+      margin: 10px 0; padding: 10px;
+      border: 2px dashed #90caf9;
+      background-color: #f1f8ff;
+      border-radius: 8px; cursor: pointer;
+    }
+    .canvas-container {
+      position: relative;
+      width: 90vw; max-width: 360px;
+      aspect-ratio: 1 / 1;
+      border: 2px solid #bbdefb;
+      border-radius: 12px; overflow: hidden;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      touch-action: none;
+    }
+    canvas {
+      width: 100%; height: 100%;
+      display: block; background: #f5f5f5;
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 16px;
+      width: 100%; padding: 0 16px;
+    }
+    label {
+      font-weight: 500; color: #333;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 8px;
+      width: 100%; max-width: 360px;
+      margin: auto;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: #1976d2;
+      cursor: pointer;
+    }
+    .button-group {
+      display: flex; gap: 10px;
+      flex-wrap: wrap; justify-content: center;
+    }
+    button {
+      background-color: #1976d2;
+      color: white; font-size: 16px;
+      font-weight: 600; padding: 10px 18px;
+      border: none; border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+      display: flex; align-items: center;
+      gap: 6px;
+    }
+    button:hover { background-color: #1565c0; }
+    #reset {
+      background-color: #ef5350;
+    }
+    #reset:hover {
+      background-color: #c62828;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+      font-size: 20px;
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: 22px; }
+      .warning { font-size: 14px; }
+      button { font-size: 14px; padding: 8px 14px; }
+      input[type="range"] { height: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <img src="logo.png" alt="Logo" class="logo" />
+  <h1>Twibbon MPLS 2025</h1>
+  <p class="warning">📌 Geser & zoom foto agar pas di bingkai.</p>
+
+  <input type="file" id="upload" accept="image/*" />
+
+  <div class="canvas-container">
+    <canvas id="canvas" width="1080" height="1080"></canvas>
+  </div>
+
+  <div class="controls">
+    <label for="zoom">
+      <input type="range" id="zoom" min="0.2" max="3" step="0.01" value="1.2" />
+      Zoom: <span id="zoomValue">1.00</span>
+    </label>
+
+    <div class="button-group">
+      <button id="download">Unduh Hasil</button>
+      <button id="reset">
+        <span class="material-symbols-outlined">restart_alt</span> Reset
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const upload = document.getElementById('upload');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const zoomSlider = document.getElementById('zoom');
+    const zoomValueLabel = document.getElementById('zoomValue');
+    const downloadBtn = document.getElementById('download');
+    const resetBtn = document.getElementById('reset');
+
+    let userImage = null;
+    const frameImage = new Image();
+    frameImage.src = 'frame.png';
+
+    const baseScale = 1.2;
+    let scale = baseScale;
+    let offsetX = 0;
+    let offsetY = 0;
+    let dragging = false;
+    let startX, startY;
+
+    upload.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const tempImg = new Image();
+        tempImg.onload = () => {
+          const maxWidth = 1280;
+          const maxHeight = 720;
+          let { width, height } = tempImg;
+          const aspectRatio = width / height;
+
+          if (width > maxWidth || height > maxHeight) {
+            if (aspectRatio > 1) {
+              width = maxWidth;
+              height = Math.round(maxWidth / aspectRatio);
+            } else {
+              height = maxHeight;
+              width = Math.round(maxHeight * aspectRatio);
+            }
+          }
+
+          const offCanvas = document.createElement('canvas');
+          offCanvas.width = width;
+          offCanvas.height = height;
+          const offCtx = offCanvas.getContext('2d');
+          offCtx.drawImage(tempImg, 0, 0, width, height);
+
+          userImage = new Image();
+          userImage.onload = () => {
+            scale = baseScale;
+            offsetX = 0;
+            offsetY = 0;
+            zoomSlider.value = scale;
+            zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+            draw();
+          };
+          userImage.src = offCanvas.toDataURL('image/jpeg', 0.9);
+        };
+        tempImg.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    zoomSlider.addEventListener('input', () => {
+      scale = parseFloat(zoomSlider.value);
+      zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+      draw();
+    });
+
+    canvas.addEventListener('mousedown', (e) => {
+      dragging = true;
+      startX = e.offsetX;
+      startY = e.offsetY;
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (dragging) {
+        offsetX += e.offsetX - startX;
+        offsetY += e.offsetY - startY;
+        startX = e.offsetX;
+        startY = e.offsetY;
+        draw();
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => (dragging = false));
+    canvas.addEventListener('mouseleave', () => (dragging = false));
+
+    canvas.addEventListener('touchstart', (e) => {
+      dragging = true;
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      startX = touch.clientX - rect.left;
+      startY = touch.clientY - rect.top;
+    });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (dragging) {
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        offsetX += x - startX;
+        offsetY += y - startY;
+        startX = x;
+        startY = y;
+        draw();
+      }
+      e.preventDefault();
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', () => (dragging = false));
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (userImage) {
+        const iw = userImage.width * scale;
+        const ih = userImage.height * scale;
+        const ix = (canvas.width - iw) / 2 + offsetX;
+        const iy = (canvas.height - ih) / 2 + offsetY;
+        ctx.drawImage(userImage, ix, iy, iw, ih);
+      }
+
+      if (frameImage.complete) {
+        ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    downloadBtn.addEventListener('click', () => {
+      if (!userImage || !frameImage.complete) {
+        alert("Pastikan foto dan frame sudah dimuat.");
+        return;
+      }
+
+      draw();
+
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.download = 'twibbon.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }, 200);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      userImage = null;
+      scale = baseScale;
+      offsetX = 0;
+      offsetY = 0;
+      zoomSlider.value = scale;
+      zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+      upload.value = "";
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (frameImage.complete) {
+        ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
+      }
+    });
+
+    frameImage.onload = () => draw();
+  </script>
+</body>
+</html>
