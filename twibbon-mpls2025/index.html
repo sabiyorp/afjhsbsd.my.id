@@ -1,281 +1,247 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Twibbon MPLS 2025</title>
-  <link rel="icon" type="image/x-icon" href="https://afjhsbsd.my.id/favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://afjhsbsd.my.id/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <style>
     :root {
       --primary: #1976d2;
       --primary-dark: #1565c0;
-      --danger: #ef5350;
-      --danger-dark: #c62828;
+      --danger: #e02121;
+      --danger-dark: #c01818;
       --bg-gradient: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
       --shadow: 0 6px 24px 0 rgba(25, 118, 210, 0.10), 0 1.5px 8px 0 rgba(25, 118, 210, 0.07);
       --radius: 18px;
-      --canvas-shadow: 0 6px 24px 0 rgba(25, 118, 210, 0.10);
-      --transition: 0.2s cubic-bezier(.4,0,.2,1);
-      --info: #1976d2;
-      --info-bg: #e3f2fd;
-      --info-font: 'Poppins', sans-serif;
-      --info-weight: 600;
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      font-family: "Montserrat", sans-serif;
       background: var(--bg-gradient);
-      margin: 0; padding: 0;
-      min-height: 100vh;
+      display: flex;
+      justify-content: center;
       color: #222;
-      text-align: center;
-      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh;
     }
+
     .card {
-      background: #fff;
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      margin-top: 32px;
-      padding: 32px 24px 24px 24px;
+      width: 100%;
       max-width: 400px;
-      width: 100vw;
+      padding: 24px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 18px;
     }
+
     .logo {
-      width: 200px; height: 96px;
-      object-fit: contain;
+      width: 160px;
+      height: auto;
       margin-bottom: 10px;
-      border-radius: 0;
-      box-shadow: none;
-      background: none;
-      border: none;
-      margin-top: 0;
     }
+
     h1 {
-      font-size: 2rem;
+      font-size: 1.8rem;
+      margin: 0 0 16px;
       color: var(--primary);
-      margin: 0 0 8px 0;
       font-weight: 700;
-      letter-spacing: -1px;
+      text-align: center;
     }
-    /* Info/Warning Styling */
-    .warning {
-      background: #f3ff88;
-      border: 1.5px solid #ff7b00;
-      color: #ff7b00;
-      padding: 14px 18px;
-      border-radius: 16px;
-      font-weight: var(--info-weight);
-      font-size: 1.05rem;
-      max-width: 360px;
-      margin: 8px auto 0 auto;
-      display: flex; align-items: center; gap: 0;
-      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
-      justify-content: center;
-      font-family: var(--info-font);
-      letter-spacing: 0.01em;
-      text-align: left;
-    }
-    .warning .info-bold {
-      color: var(--info);
-      font-weight: 700;
-      font-family: var(--info-font);
-      letter-spacing: 0.01em;
-    }
+
     input[type="file"] {
       font-size: 1rem;
       border: 2px dashed var(--primary);
-      background: #e3f2fd;
       border-radius: 14px;
       padding: 20px;
-      margin: 12px 0 0 0;
+      margin: 10px 0;
       width: 100%;
       cursor: pointer;
-      transition: border-color var(--transition);
+      background: #e3efff;
     }
-    input[type="file"]:hover {
-      border-color: var(--primary-dark);
+
+    .border {
+      border: 1.5px solid var(--primary);
+      border-radius: 14px;
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
     }
+
+    .warning,
+    .hint-touch {
+      display: flex;
+      align-items: center;
+      font-size: 0.95rem;
+      gap: 6px;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .hint-touch {
+      display: none;
+      margin-top: 6px;
+    }
+
+    @media (pointer: coarse) {
+      .hint-touch {
+        display: flex;
+      }
+    }
+
     .canvas-container {
       position: relative;
       width: 100%;
       max-width: 340px;
       aspect-ratio: 1 / 1;
-      border-radius: 20px;
+      margin-top: 16px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: var(--canvas-shadow);
-      margin: 16px 0 0 0;
-      background: #e3f2fd;
-      border: 2.5px solid #bbdefb;
-      touch-action: none;
-      user-select: none;
+      box-shadow: var(--shadow);
+      border: 2px solid #bbdefb;
+      background: #f5f5f5;
     }
+
     canvas {
       width: 100%;
       height: 100%;
       display: block;
-      background: #f5f5f5;
     }
+
     .controls {
+      margin-top: 20px;
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-      margin: 18px 0 0 0;
     }
+
     .zoom-row {
       display: flex;
       align-items: center;
-      gap: 14px;
-      width: 100%;
+      gap: 12px;
     }
+
     label {
-      font-weight: 500;
-      color: #333;
-      margin-bottom: 4px;
+      font-weight: 600;
+      margin-bottom: 6px;
       display: block;
+      color: #333;
       text-align: left;
     }
+
     .zoom-slider {
-      width: 100%;
+      flex: 1;
       accent-color: var(--primary);
-      cursor: pointer;
       height: 4px;
-      background: #e3f2fd;
-      border-radius: 3px;
     }
+
     .zoom-value {
-      min-width: 36px;
-      font-variant-numeric: tabular-nums;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 1rem;
       color: var(--primary);
-      font-size: 1.05rem;
-      margin-left: 6px;
+      min-width: 50px;
+      text-align: right;
     }
+
     .button-group {
-      width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 11px;
-      align-items: center;
-      margin-top: 40px;
+      gap: 12px;
+      margin-top: 28px;
+      width: 100%;
     }
-    /* Download button big */
+
     #download {
       background: var(--primary);
       color: #fff;
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      padding: 17px 0;
+      padding: 16px 0;
       border: none;
       border-radius: 12px;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.11);
       width: 100%;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
       justify-content: center;
-      letter-spacing: 0.02em;
-      transition: background var(--transition), box-shadow var(--transition);
+      gap: 8px;
     }
-    #download:hover, #download:focus {
-      background: var(--primary-dark);
-      box-shadow: 0 4px 16px rgba(25, 118, 210, 0.16);
-    }
-    /* Reset button small */
+
     #reset {
       background: var(--danger);
-      color: #fff;
-      font-size: 0.96rem;
+      color: white;
+      font-size: 0.95rem;
       font-weight: 600;
-      padding: 7px 0;
+      padding: 10px 0;
       border: none;
       border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(239, 83, 80, 0.13);
       width: 60%;
+      margin: 0 auto 100px auto;
+      cursor: pointer;
       display: flex;
-      align-items: center;
-      gap: 7px;
       justify-content: center;
-      letter-spacing: 0.01em;
-      transition: background var(--transition), box-shadow var(--transition);
-      margin: 0 auto;
+      gap: 6px;
     }
-    #reset:hover, #reset:focus {
-      background: var(--danger-dark);
-      box-shadow: 0 4px 16px rgba(198, 40, 40, 0.16);
-    }
+
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
-      font-size: 22px;
+      font-size: 20px;
       vertical-align: middle;
     }
-    .hint-touch {
-      display: none;
-      color: #1976d2;
-      background: #e3f2fd;
-      border-radius: 10px;
-      padding: 6px 13px;
-      font-size: 0.98rem;
-      margin: 0 auto 0 auto;
-      max-width: 250px;
-      align-items: center;
-      gap: 6px;
-      font-weight: 500;
-      box-shadow: 0 1.5px 6px rgba(25, 118, 210, 0.06);
-      text-align: left;
-    }
-    @media (pointer: coarse) {
-      .hint-touch { display: flex; }
-    }
+
     @media (max-width: 480px) {
-      .card { padding: 18px 7vw 14px 7vw; margin-top: 14px; }
-      h1 { font-size: 2rem; }
-      .warning { font-size: 0.98rem; }
-      #download { font-size: 1.1rem; padding: 13px 0; }
-      #reset { font-size: 0.93rem; padding: 7px 0; }
-      label { font-size: 0.98rem; }
-    }
-    @media (max-width: 340px) {
-      .canvas-container { max-width: 98vw; }
+      .card {
+        padding: 18px 14px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .zoom-value {
+        font-size: 1rem;
+      }
+
+      #download {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="card">
     <img src="logo.png" alt="Logo" class="logo" />
     <h1>Twibbon MPLS 2025</h1>
     <input type="file" id="upload" accept="image/*" />
-    <div class="warning">
-      <span>Geser dan zoom foto agar pas ke dalam bingkai.</span>
+    <div class="border">
+      <div class="warning">
+        <span class="material-symbols-outlined">info</span>
+        <span>Geser dan zoom foto ke dalam bingkai.</span>
+      </div>
+      <div class="hint-touch">
+        <span class="material-symbols-outlined">touch_app</span>
+        Cubit untuk zoom, seret untuk geser.
+      </div>
     </div>
-    <div class="hint-touch" id="hintTouch">
-      <span class="material-symbols-outlined">touch_app</span>
-      Cubit foto untuk zoom, seret foto untuk geser.
-    </div>
-
-    <div class="canvas-container" id="canvasWrapper">
+    <div class="canvas-container">
       <canvas id="canvas" width="1080" height="1080"></canvas>
     </div>
-
     <div class="controls">
-      <div>
-        <label for="zoom">Zoom Foto</label>
-        <div class="zoom-row">
-          <input type="range" id="zoom" min="0.2" max="3" step="0.01" value="1.2" class="zoom-slider" />
-          <span class="zoom-value" id="zoomValue">1.00</span>
-        </div>
+      <label for="zoom">Zoom Foto</label>
+      <div class="zoom-row">
+        <input type="range" id="zoom" min="0.2" max="3" step="0.01" value="1.2" class="zoom-slider" />
+        <span class="zoom-value" id="zoomValue">1.00</span>
       </div>
       <div class="button-group">
-        <button id="download"><span class="material-symbols-outlined">download</span> Unduh</button>
-        <button id="reset"><span class="material-symbols-outlined">restart_alt</span> Reset</button>
+        <button id="download"><span class="material-symbols-outlined">download</span>Unduh Hasil</button>
+        <button id="reset"><span class="material-symbols-outlined">restart_alt</span>Atur Ulang</button>
       </div>
     </div>
   </div>
@@ -310,7 +276,7 @@
       const [t1, t2] = e.touches;
       const dx = t1.clientX - t2.clientX;
       const dy = t1.clientY - t2.clientY;
-      return Math.sqrt(dx*dx + dy*dy);
+      return Math.sqrt(dx * dx + dy * dy);
     }
     function getTouchMid(e, rect) {
       if (e.touches.length < 2) return null;
@@ -498,5 +464,7 @@
       hintTouch.style.display = 'flex';
     }
   </script>
+  <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'95c1239babcfa3e3',t:'MTc1MTk5NDAzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>
+
 </html>
