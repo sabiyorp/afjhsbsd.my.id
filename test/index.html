@@ -87,13 +87,6 @@
       padding: 0 16px;
     }
 
-    .controls p {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: #333;
-    }
-
     label {
       font-weight: 500;
       color: #333;
@@ -117,7 +110,8 @@
       gap: 10px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 60px;
+      margin-bottom: 30px;
+      /* Tambahan margin bawah */
     }
 
     button {
@@ -125,9 +119,9 @@
       color: white;
       font-size: 16px;
       font-weight: 600;
-      padding: 10px 18px;
+      padding: 12px 22px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
       transition: background 0.2s;
@@ -163,22 +157,17 @@
       }
 
       button {
-        font-size: 14px;
-        padding: 8px 14px;
+        font-size: 15px;
+        padding: 14px 20px;
+        width: 100%;
+        max-width: 320px;
       }
 
-      input[type="range"] {
-        height: 36px;
+      .button-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
       }
-    }
-
-    .zoom-label {
-      font-weight: 500;
-      color: #333;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
     }
   </style>
 </head>
@@ -195,11 +184,9 @@
   </div>
 
   <div class="controls">
-    <p>Pengaturan</p>
-    <label for="zoom" class="zoom-label">
-      Zoom: <span id="zoomValue">100%</span>
-    </label>
-    <input type="range" id="zoom" min="0" max="100" step="1" value="100" />
+    <label for="zoom">
+      <input type="range" id="zoom" min="0.2" max="3" step="0.01" value="1.2" />
+      Zoom: <span id="zoomValue">1.00</span>
     </label>
 
     <div class="button-group">
@@ -265,7 +252,7 @@
             offsetX = 0;
             offsetY = 0;
             zoomSlider.value = scale;
-            zoomValueLabel.textContent = Math.round((scale / baseScale) * 100) + '%';
+            zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
             draw();
           };
           userImage.src = offCanvas.toDataURL('image/jpeg', 0.9);
@@ -276,11 +263,10 @@
     });
 
     zoomSlider.addEventListener('input', () => {
-      scale = (parseFloat(zoomSlider.value) / 100) * baseScale;
-      zoomValueLabel.textContent = zoomSlider.value + '%';
+      scale = parseFloat(zoomSlider.value);
+      zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
       draw();
     });
-
 
     canvas.addEventListener('mousedown', (e) => {
       dragging = true;
@@ -364,7 +350,7 @@
       offsetX = 0;
       offsetY = 0;
       zoomSlider.value = scale;
-      zoomValueLabel.textContent = Math.round((scale / baseScale) * 100) + '%';
+      zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
       upload.value = "";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
