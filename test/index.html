@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,194 +8,270 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
+    :root {
+      --primary: #1976d2;
+      --primary-dark: #1565c0;
+      --danger: #ef5350;
+      --danger-dark: #c62828;
+      --bg-gradient: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+      --shadow: 0 6px 24px 0 rgba(25, 118, 210, 0.10), 0 1.5px 8px 0 rgba(25, 118, 210, 0.07);
+      --radius: 18px;
+      --canvas-shadow: 0 6px 24px 0 rgba(25, 118, 210, 0.10);
+      --transition: 0.2s cubic-bezier(.4,0,.2,1);
+      --info: #1976d2;
+      --info-bg: #e3f2fd;
+      --info-font: 'Poppins', sans-serif;
     }
-
+    * { box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
-      margin: 0;
-      padding: 0;
+      background: var(--bg-gradient);
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      color: #222;
+      text-align: center;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .card {
+      background: #fff;
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      margin-top: 32px;
+      padding: 32px 24px 24px 24px;
+      max-width: 400px;
+      width: 100vw;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      text-align: center;
-      overflow-x: hidden;
+      gap: 18px;
     }
-
     .logo {
-      width: 120px;
-      margin-top: 20px;
+      width: 200px; height: 96px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      border-radius: 0;
+      box-shadow: none;
+      background: none;
+      border: none;
+      margin-top: 0;
     }
-
     h1 {
-      font-size: 28px;
-      color: #1976d2;
-      margin: 10px 0;
+      font-size: 2rem;
+      color: var(--primary);
+      margin: 0 0 8px 0;
+      font-weight: 700;
+      letter-spacing: -1px;
     }
-
+    /* Info/Warning Styling */
     .warning {
-      background-color: #fff3cd;
-      color: #856404;
-      padding: 10px 15px;
-      border-radius: 8px;
-      border: 1px solid #ffeeba;
-      font-weight: 600;
-      max-width: 90%;
-      margin: 15px auto;
+      background: var(--info-bg);
+      color: var(--info);
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-weight: var(--info-weight);
+      font-size: 0.9rem;
+      max-width: 360px;
+      margin: 8px auto 0 auto;
+      display: flex; align-items: center; gap: 0;
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+      justify-content: center;
+      font-family: var(--info-font);
+      letter-spacing: 0.01em;
+      text-align: center;
     }
-
     input[type="file"] {
-      margin: 10px 0;
-      padding: 10px;
-      border: 2px dashed #90caf9;
-      background-color: #f1f8ff;
-      border-radius: 8px;
+      font-size: 1rem;
+      border: 2px dashed var(--primary);
+      background: #e3f2fd;
+      border-radius: 14px;
+      padding: 20px;
+      margin: 12px 0 0 0;
+      width: 100%;
       cursor: pointer;
+      transition: border-color var(--transition);
     }
-
+    input[type="file"]:hover {
+      border-color: var(--primary-dark);
+    }
     .canvas-container {
       position: relative;
-      width: 90vw;
-      max-width: 360px;
+      width: 100%;
+      max-width: 340px;
       aspect-ratio: 1 / 1;
-      border: 2px solid #bbdefb;
-      border-radius: 12px;
+      border-radius: 20px;
       overflow: hidden;
-      background: #fff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--canvas-shadow);
+      margin: 16px 0 0 0;
+      background: #e3f2fd;
+      border: 2.5px solid #bbdefb;
       touch-action: none;
+      user-select: none;
     }
-
     canvas {
       width: 100%;
       height: 100%;
       display: block;
       background: #f5f5f5;
     }
-
     .controls {
-      margin-top: 20px;
+      width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      width: 100%;
-      padding: 0 16px;
+      gap: 22px;
+      margin: 18px 0 0 0;
     }
-
+    .zoom-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+    }
     label {
       font-weight: 500;
       color: #333;
+      margin-bottom: 4px;
+      display: block;
+      text-align: left;
+    }
+    .zoom-slider {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+      height: 4px;
+      background: #e3f2fd;
+      border-radius: 3px;
+    }
+    .zoom-value {
+      min-width: 36px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+      color: var(--primary);
+      font-size: 1.05rem;
+      margin-left: 6px;
+    }
+    .button-group {
+      width: 100%;
       display: flex;
       flex-direction: column;
+      gap: 11px;
       align-items: center;
-      gap: 8px;
-      width: 100%;
-      max-width: 360px;
-      margin: auto;
+      margin-top: 8px;
     }
-
-    input[type="range"] {
-      width: 100%;
-      accent-color: #1976d2;
+    /* Download button big */
+    #download {
+      background: var(--primary);
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 17px 0;
+      border: none;
+      border-radius: 12px;
       cursor: pointer;
-    }
-
-    .button-group {
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.11);
+      width: 100%;
       display: flex;
+      align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 30px;
-      /* Tambahan margin bawah */
+      letter-spacing: 0.02em;
+      transition: background var(--transition), box-shadow var(--transition);
     }
-
-    button {
-      background-color: #1976d2;
-      color: white;
-      font-size: 16px;
+    #download:hover, #download:focus {
+      background: var(--primary-dark);
+      box-shadow: 0 4px 16px rgba(25, 118, 210, 0.16);
+    }
+    /* Reset button small */
+    #reset {
+      background: var(--danger);
+      color: #fff;
+      font-size: 0.96rem;
       font-weight: 600;
-      padding: 12px 22px;
+      padding: 7px 0;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(239, 83, 80, 0.13);
+      width: 60%;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
+      justify-content: center;
+      letter-spacing: 0.01em;
+      transition: background var(--transition), box-shadow var(--transition);
+      margin: 0 auto;
     }
-
-    button:hover {
-      background-color: #1565c0;
+    #reset:hover, #reset:focus {
+      background: var(--danger-dark);
+      box-shadow: 0 4px 16px rgba(198, 40, 40, 0.16);
     }
-
-    #reset {
-      background-color: #ef5350;
-    }
-
-    #reset:hover {
-      background-color: #c62828;
-    }
-
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
-      font-size: 20px;
+      font-size: 22px;
+      vertical-align: middle;
     }
-
+    .hint-touch {
+      display: none;
+      color: #1976d2;
+      background: #e3f2fd;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.8rem;
+      margin: 8px auto 0 auto;
+      max-width: 305px;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+      box-shadow: 0 1.5px 6px rgba(25, 118, 210, 0.06);
+    }
+    @media (pointer: coarse) {
+      .hint-touch { display: flex; }
+    }
     @media (max-width: 480px) {
-      h1 {
-        font-size: 22px;
-      }
-
-      .warning {
-        font-size: 14px;
-      }
-
-      button {
-        font-size: 15px;
-        padding: 14px 20px;
-        width: 100%;
-        max-width: 320px;
-      }
-
-      .button-group {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-      }
+      .card { padding: 18px 7vw 14px 7vw; margin-top: 14px; }
+      h1 { font-size: 2rem; }
+      .warning { font-size: 0.8rem; }
+      #download { font-size: 1.1rem; padding: 13px 0; }
+      #reset { font-size: 0.93rem; padding: 7px 0; }
+      label { font-size: 0.98rem; }
+    }
+    @media (max-width: 340px) {
+      .canvas-container { max-width: 98vw; }
     }
   </style>
 </head>
-
 <body>
-  <img src="logo.png" alt="Logo" class="logo" />
-  <h1>Twibbon MPLS 2025</h1>
-  <p class="warning">📌 Geser & zoom foto agar pas di bingkai.</p>
+  <div class="card">
+    <img src="logo.png" alt="Logo" class="logo" />
+    <h1>Twibbon MPLS 2025</h1>
 
-  <input type="file" id="upload" accept="image/*" />
+    <input type="file" id="upload" accept="image/*" />
 
-  <div class="canvas-container">
-    <canvas id="canvas" width="1080" height="1080"></canvas>
-  </div>
+    <div class="warning">
+      <span>Geser dan zoom foto agar pas di bingkai.</span>
+    </div>
+    <div class="hint-touch" id="hintTouch">
+      <span class="material-symbols-outlined">touch_app</span>
+      Cubit layar untuk zoom, seret untuk geser.
+    </div>
 
-  <div class="controls">
-    <label for="zoom">
-      <input type="range" id="zoom" min="0.2" max="3" step="0.01" value="1.2" />
-      Zoom: <span id="zoomValue">1.00</span>
-    </label>
+    <div class="canvas-container" id="canvasWrapper">
+      <canvas id="canvas" width="1080" height="1080"></canvas>
+    </div>
 
-    <div class="button-group">
-      <button id="download">Unduh Hasil</button>
-      <button id="reset">
-        <span class="material-symbols-outlined">restart_alt</span> Reset
-      </button>
+    <div class="controls">
+      <div>
+        <label for="zoom">Zoom Foto</label>
+        <div class="zoom-row">
+          <input type="range" id="zoom" min="0.2" max="3" step="0.01" value="1.2" class="zoom-slider" />
+          <span class="zoom-value" id="zoomValue">1.00</span>
+        </div>
+      </div>
+      <div class="button-group">
+        <button id="download"><span class="material-symbols-outlined">download</span> Unduh</button>
+        <button id="reset"><span class="material-symbols-outlined">restart_alt</span> Reset</button>
+      </div>
     </div>
   </div>
-
   <script>
     const upload = document.getElementById('upload');
     const canvas = document.getElementById('canvas');
@@ -205,6 +280,8 @@
     const zoomValueLabel = document.getElementById('zoomValue');
     const downloadBtn = document.getElementById('download');
     const resetBtn = document.getElementById('reset');
+    const hintTouch = document.getElementById('hintTouch');
+    const canvasWrapper = document.getElementById('canvasWrapper');
 
     let userImage = null;
     const frameImage = new Image();
@@ -217,6 +294,26 @@
     let dragging = false;
     let startX, startY;
 
+    // Pinch-to-zoom
+    let lastTouchDist = null;
+    let lastMid = null;
+
+    function getTouchDist(e) {
+      if (e.touches.length < 2) return null;
+      const [t1, t2] = e.touches;
+      const dx = t1.clientX - t2.clientX;
+      const dy = t1.clientY - t2.clientY;
+      return Math.sqrt(dx*dx + dy*dy);
+    }
+    function getTouchMid(e, rect) {
+      if (e.touches.length < 2) return null;
+      const [t1, t2] = e.touches;
+      return {
+        x: ((t1.clientX + t2.clientX) / 2) - rect.left,
+        y: ((t1.clientY + t2.clientY) / 2) - rect.top
+      };
+    }
+
     upload.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -225,11 +322,9 @@
       reader.onload = (event) => {
         const tempImg = new Image();
         tempImg.onload = () => {
-          const maxWidth = 1280;
-          const maxHeight = 720;
+          const maxWidth = 1280, maxHeight = 1280;
           let { width, height } = tempImg;
           const aspectRatio = width / height;
-
           if (width > maxWidth || height > maxHeight) {
             if (aspectRatio > 1) {
               width = maxWidth;
@@ -239,13 +334,10 @@
               width = Math.round(maxHeight * aspectRatio);
             }
           }
-
           const offCanvas = document.createElement('canvas');
-          offCanvas.width = width;
-          offCanvas.height = height;
+          offCanvas.width = width; offCanvas.height = height;
           const offCtx = offCanvas.getContext('2d');
           offCtx.drawImage(tempImg, 0, 0, width, height);
-
           userImage = new Image();
           userImage.onload = () => {
             scale = baseScale;
@@ -268,12 +360,12 @@
       draw();
     });
 
+    // Drag/Move mouse
     canvas.addEventListener('mousedown', (e) => {
       dragging = true;
       startX = e.offsetX;
       startY = e.offsetY;
     });
-
     canvas.addEventListener('mousemove', (e) => {
       if (dragging) {
         offsetX += e.offsetX - startX;
@@ -283,22 +375,27 @@
         draw();
       }
     });
+    canvas.addEventListener('mouseup', () => dragging = false);
+    canvas.addEventListener('mouseleave', () => dragging = false);
 
-    canvas.addEventListener('mouseup', () => (dragging = false));
-    canvas.addEventListener('mouseleave', () => (dragging = false));
-
+    // Touch events: move and pinch
     canvas.addEventListener('touchstart', (e) => {
-      dragging = true;
-      const touch = e.touches[0];
-      const rect = canvas.getBoundingClientRect();
-      startX = touch.clientX - rect.left;
-      startY = touch.clientY - rect.top;
-    });
-
-    canvas.addEventListener('touchmove', (e) => {
-      if (dragging) {
+      if (e.touches.length === 1) {
+        dragging = true;
         const touch = e.touches[0];
         const rect = canvas.getBoundingClientRect();
+        startX = touch.clientX - rect.left;
+        startY = touch.clientY - rect.top;
+      } else if (e.touches.length === 2) {
+        dragging = false;
+        lastTouchDist = getTouchDist(e);
+        lastMid = getTouchMid(e, canvas.getBoundingClientRect());
+      }
+    });
+    canvas.addEventListener('touchmove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      if (e.touches.length === 1 && dragging) {
+        const touch = e.touches[0];
         const x = touch.clientX - rect.left;
         const y = touch.clientY - rect.top;
         offsetX += x - startX;
@@ -306,15 +403,46 @@
         startX = x;
         startY = y;
         draw();
+      } else if (e.touches.length === 2) {
+        // Pinch zoom
+        const dist = getTouchDist(e);
+        if (lastTouchDist && dist) {
+          const scaleChange = dist / lastTouchDist;
+          const prevScale = scale;
+          scale = Math.max(0.2, Math.min(3, scale * scaleChange));
+          zoomSlider.value = scale;
+          zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+
+          // Zoom center on pinch mid-point
+          const mid = getTouchMid(e, rect);
+          if (mid && lastMid) {
+            const dx = mid.x - lastMid.x;
+            const dy = mid.y - lastMid.y;
+            offsetX += dx;
+            offsetY += dy;
+
+            // Adjust offset so that zoom is centered under the pinch
+            const scaleDelta = scale / prevScale;
+            offsetX = (offsetX - mid.x) * scaleDelta + mid.x;
+            offsetY = (offsetY - mid.y) * scaleDelta + mid.y;
+          }
+          draw();
+        }
+        lastTouchDist = dist;
+        lastMid = getTouchMid(e, rect);
       }
       e.preventDefault();
     }, { passive: false });
-
-    canvas.addEventListener('touchend', () => (dragging = false));
+    canvas.addEventListener('touchend', (e) => {
+      dragging = false;
+      if (e.touches.length < 2) {
+        lastTouchDist = null;
+        lastMid = null;
+      }
+    });
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       if (userImage) {
         const iw = userImage.width * scale;
         const ih = userImage.height * scale;
@@ -322,7 +450,6 @@
         const iy = (canvas.height - ih) / 2 + offsetY;
         ctx.drawImage(userImage, ix, iy, iw, ih);
       }
-
       if (frameImage.complete) {
         ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
       }
@@ -333,18 +460,19 @@
         alert("Pastikan foto dan frame sudah dimuat.");
         return;
       }
-
       draw();
-
       setTimeout(() => {
         const link = document.createElement('a');
         link.download = 'twibbon.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
-      }, 200);
+      }, 120);
     });
 
     resetBtn.addEventListener('click', () => {
+      if (!confirm("Apakah Anda yakin ingin mereset? Semua perubahan foto akan hilang.")) {
+        return;
+      }
       userImage = null;
       scale = baseScale;
       offsetX = 0;
@@ -353,14 +481,16 @@
       zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
       upload.value = "";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       if (frameImage.complete) {
         ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
       }
     });
 
     frameImage.onload = () => draw();
+    // Show pinch hint only on touch devices
+    if ('ontouchstart' in window) {
+      hintTouch.style.display = 'flex';
+    }
   </script>
 </body>
-
 </html>
