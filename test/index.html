@@ -252,7 +252,7 @@
   <div class="card">
     <img src="logo.png" alt="Logo" class="logo" />
     <h1>Twibbon MPLS 2025</h1>
-<input type="file" id="upload" accept="image/*" />
+    <input type="file" id="upload" accept="image/*" />
     <div class="warning">
       <span>Geser dan zoom foto agar pas ke dalam bingkai.</span>
     </div>
@@ -332,14 +332,13 @@
           const maxWidth = 1280, maxHeight = 1280;
           let { width, height } = tempImg;
           const aspectRatio = width / height;
-          if (width > maxWidth || height > maxHeight) {
-            if (aspectRatio > 1) {
-              width = maxWidth;
-              height = Math.round(maxWidth / aspectRatio);
-            } else {
-              height = maxHeight;
-              width = Math.round(maxHeight * aspectRatio);
-            }
+          // SELALU resize ke max 1280 pada sisi terpanjang
+          if (aspectRatio > 1) {
+            width = 1280;
+            height = Math.round(1280 / aspectRatio);
+          } else {
+            height = 1280;
+            width = Math.round(1280 * aspectRatio);
           }
           const offCanvas = document.createElement('canvas');
           offCanvas.width = width; offCanvas.height = height;
