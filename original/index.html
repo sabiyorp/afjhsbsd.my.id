@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Aplikasi Twibbon MPLS 2025 oleh OSIS SMP Al-Fath BSD. Unggah foto Anda, sesuaikan posisi, dan unduh hasilnya langsung dari perangkat.">
+  <title>Twibbon MPLS 2025</title>
+  <link rel="icon" href="https://afjhsbsd.my.id/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1976d2;
+      --primary-dark: #1565c0;
+      --danger: #ffef41;
+      --danger-dark: #ffb700;
+      --bg-gradient: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+      --shadow: 0 6px 24px 0 rgba(25, 118, 210, 0.10), 0 1.5px 8px 0 rgba(25, 118, 210, 0.07);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Montserrat", sans-serif;
+      background: var(--bg-gradient);
+      display: flex;
+      justify-content: center;
+      color: #222;
+      min-height: 100vh;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 400px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      width: 160px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin: 0 0 16px;
+      color: var(--primary);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    input[type="file"] {
+      font-size: 1rem;
+      border: 3px dashed var(--danger-dark);
+      border-radius: 14px;
+      padding: 20px;
+      margin: 10px 0;
+      width: 100%;
+      cursor: pointer;
+      background: #fffcc2;
+    }
+
+    .border {
+      border: 1.5px solid var(--primary);
+      border-radius: 14px;
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
+    }
+
+    .warning,
+    .hint-touch {
+      display: flex;
+      align-items: center;
+      font-size: 0.95rem;
+      gap: 6px;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .hint-touch {
+      display: none;
+      margin-top: 6px;
+    }
+
+    @media (pointer: coarse) {
+      .hint-touch {
+        display: flex;
+      }
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      aspect-ratio: 1 / 1;
+      margin-top: 16px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 2px solid #bbdefb;
+      background: #f5f5f5;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .controls {
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .zoom-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+      color: #333;
+      text-align: left;
+    }
+
+    .zoom-slider {
+      flex: 1;
+      accent-color: var(--primary);
+      height: 4px;
+    }
+
+    .zoom-value {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--primary);
+      min-width: 50px;
+      text-align: right;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 28px;
+      width: 100%;
+    }
+
+    #download {
+      background: var(--primary);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 16px 0;
+      border: none;
+      border-radius: 12px;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    #reset {
+      background: var(--danger);
+      border: 2px solid black;
+      color: rgb(0, 0, 0);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 10px 0;
+      border-radius: 10px;
+      width: 40%;
+      margin: 10px auto 70px auto;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+      font-size: 20px;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 18px 14px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .zoom-value {
+        font-size: 1rem;
+      }
+
+      #download {
+        font-size: 1.1rem;
+      }
+    }
+
+    /* Perbaikan font tombol agar konsisten pakai Montserrat */
+    #download,
+    #reset {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .footer-contact {
+      background: #ffffff;
+      color: var(--primary);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      border: 1.5px solid var(--primary);
+      border-radius: 12px;
+      padding: 7px 16px;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      text-align: left;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(34, 34, 34, 0.6);
+      backdrop-filter: blur(3px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 20px;
+      max-width: 90%;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: var(--shadow);
+      color: #333;
+      text-align: left;
+    }
+
+    .popup-close {
+      padding: 10px 18px;
+      background: var(--danger);
+      align-items: center;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      border-radius: 10px;
+      border: 2px solid black;
+      color: #000000;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      line-height: 1;
+      gap: 6px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body.popup-open {
+      overflow: hidden;
+    }
+
+    .popup-content h3:first-of-type {
+      margin-top: 0;
+    }
+
+        .popup-content p:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .file-label {
+      position: absolute;
+      left: -10000px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <img src="logo.png" alt="" class="logo" />
+    <h1>Twibbon MPLS 2025</h1>
+    <label for="upload" class="file-label">Upload Foto Potret Anda di Sini</label>
+    <input type="file" id="upload" accept="image/*" />
+
+    <div class="border">
+      <div class="warning">
+        <span class="material-symbols-outlined">info</span>
+        <span>Geser dan zoom foto ke dalam bingkai.</span>
+      </div>
+      <div class="hint-touch">
+        <span class="material-symbols-outlined">touch_app</span>
+        Cubit untuk zoom, seret untuk geser.
+      </div>
+    </div>
+    <div class="canvas-container">
+      <canvas id="canvas" width="1080" height="1080"></canvas>
+    </div>
+    <div class="controls">
+      <label for="zoom">Zoom Foto</label>
+      <div class="zoom-row">
+        <input type="range" id="zoom" min="0.2" max="3" step="0.01" value="1.2" class="zoom-slider" />
+        <span class="zoom-value" id="zoomValue">1.00</span>
+      </div>
+      <div class="button-group">
+        <button id="download"><span class="material-symbols-outlined">download</span>Download sebagai PNG</button>
+        <button id="reset"><span class="material-symbols-outlined">restart_alt</span>Atur Ulang</button>
+      </div>
+    </div>
+    <footer class="footer">
+      <button class="footer-contact" onclick="openPopup()">
+        Tentang & Privasi
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </footer>
+  </div>
+  <div id="popup" class="popup" style="display: none;">
+    <div class="popup-content">
+      <button onclick="closePopup()" class="popup-close">
+        <span class="material-symbols-outlined">close</span> Tutup
+      </button>
+      <h3>Tentang</h3>
+      <p>
+        Aplikasi ini dibuat untuk keperluan kegiatan MPLS dan dikembangkan oleh OSIS SMP Al-Fath BSD.
+      </p>
+      <h3>Privasi</strong></h3>
+      <p>
+        Aplikasi ini tidak mengirim atau menyimpan gambar yang diunggah. Semua proses berjalan langsung di perangkat
+        Anda.
+      </p>
+      <h3>Hubungi Webmaster</h3>
+      <p>
+        Untuk pertanyaan atau informasi lebih lanjut, silakan hubungi:
+        <br><br>Sabiyo Riezky Pratama<br>
+        Website: <a href="https://sabiyo.my.id" target="_blank">sabiyo.my.id</a><br>
+        Email: <a href="mailto:biyo@srp.my.id">biyo@srp.my.id</a>
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    const popup = document.getElementById('popup');
+
+    function openPopup() {
+      document.getElementById('popup').style.display = 'flex';
+      document.body.classList.add('popup-open');
+    }
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+      document.body.classList.remove('popup-open');
+    }
+
+
+    const upload = document.getElementById('upload');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const zoomSlider = document.getElementById('zoom');
+    const zoomValueLabel = document.getElementById('zoomValue');
+    const downloadBtn = document.getElementById('download');
+    const resetBtn = document.getElementById('reset');
+    const hintTouch = document.getElementById('hintTouch');
+    const canvasWrapper = document.getElementById('canvasWrapper');
+
+    let userImage = null;
+    const frameImage = new Image();
+    frameImage.src = 'frame.png';
+
+    const baseScale = 1.2;
+    let scale = baseScale;
+    let offsetX = 0;
+    let offsetY = 0;
+    let dragging = false;
+    let startX, startY;
+
+    // Pinch-to-zoom
+    let lastTouchDist = null;
+    let lastMid = null;
+
+    function getTouchDist(e) {
+      if (e.touches.length < 2) return null;
+      const [t1, t2] = e.touches;
+      const dx = t1.clientX - t2.clientX;
+      const dy = t1.clientY - t2.clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+    function getTouchMid(e, rect) {
+      if (e.touches.length < 2) return null;
+      const [t1, t2] = e.touches;
+      return {
+        x: ((t1.clientX + t2.clientX) / 2) - rect.left,
+        y: ((t1.clientY + t2.clientY) / 2) - rect.top
+      };
+    }
+
+    upload.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const tempImg = new Image();
+        tempImg.onload = () => {
+          const maxWidth = 1280, maxHeight = 1280;
+          let { width, height } = tempImg;
+          const aspectRatio = width / height;
+          // SELALU resize ke max 1280 pada sisi terpanjang
+          if (aspectRatio > 1) {
+            width = 1280;
+            height = Math.round(1280 / aspectRatio);
+          } else {
+            height = 1280;
+            width = Math.round(1280 * aspectRatio);
+          }
+          const offCanvas = document.createElement('canvas');
+          offCanvas.width = width; offCanvas.height = height;
+          const offCtx = offCanvas.getContext('2d');
+          offCtx.drawImage(tempImg, 0, 0, width, height);
+          userImage = new Image();
+          userImage.onload = () => {
+            scale = baseScale;
+            offsetX = 0;
+            offsetY = 0;
+            zoomSlider.value = scale;
+            zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+            draw();
+          };
+          userImage.src = offCanvas.toDataURL('image/jpeg', 0.9);
+        };
+        tempImg.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    zoomSlider.addEventListener('input', () => {
+      scale = parseFloat(zoomSlider.value);
+      zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+      draw();
+    });
+
+    // Drag/Move mouse
+    canvas.addEventListener('mousedown', (e) => {
+      dragging = true;
+      startX = e.offsetX;
+      startY = e.offsetY;
+    });
+    canvas.addEventListener('mousemove', (e) => {
+      if (dragging) {
+        offsetX += e.offsetX - startX;
+        offsetY += e.offsetY - startY;
+        startX = e.offsetX;
+        startY = e.offsetY;
+        draw();
+      }
+    });
+    canvas.addEventListener('mouseup', () => dragging = false);
+    canvas.addEventListener('mouseleave', () => dragging = false);
+
+    // Touch events: move and pinch
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        dragging = true;
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        startX = touch.clientX - rect.left;
+        startY = touch.clientY - rect.top;
+      } else if (e.touches.length === 2) {
+        dragging = false;
+        lastTouchDist = getTouchDist(e);
+        lastMid = getTouchMid(e, canvas.getBoundingClientRect());
+      }
+    });
+    canvas.addEventListener('touchmove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      if (e.touches.length === 1 && dragging) {
+        const touch = e.touches[0];
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+        offsetX += x - startX;
+        offsetY += y - startY;
+        startX = x;
+        startY = y;
+        draw();
+      } else if (e.touches.length === 2) {
+        // Pinch zoom
+        const dist = getTouchDist(e);
+        if (lastTouchDist && dist) {
+          const scaleChange = dist / lastTouchDist;
+          const prevScale = scale;
+          scale = Math.max(0.2, Math.min(3, scale * scaleChange));
+          zoomSlider.value = scale;
+          zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+
+          // Zoom center on pinch mid-point
+          const mid = getTouchMid(e, rect);
+          if (mid && lastMid) {
+            const dx = mid.x - lastMid.x;
+            const dy = mid.y - lastMid.y;
+            offsetX += dx;
+            offsetY += dy;
+
+            // Adjust offset so that zoom is centered under the pinch
+            const scaleDelta = scale / prevScale;
+            offsetX = (offsetX - mid.x) * scaleDelta + mid.x;
+            offsetY = (offsetY - mid.y) * scaleDelta + mid.y;
+          }
+          draw();
+        }
+        lastTouchDist = dist;
+        lastMid = getTouchMid(e, rect);
+      }
+      e.preventDefault();
+    }, { passive: false });
+    canvas.addEventListener('touchend', (e) => {
+      dragging = false;
+      if (e.touches.length < 2) {
+        lastTouchDist = null;
+        lastMid = null;
+      }
+    });
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (userImage) {
+        const iw = userImage.width * scale;
+        const ih = userImage.height * scale;
+        const ix = (canvas.width - iw) / 2 + offsetX;
+        const iy = (canvas.height - ih) / 2 + offsetY;
+        ctx.drawImage(userImage, ix, iy, iw, ih);
+      }
+      if (frameImage.complete) {
+        ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    downloadBtn.addEventListener('click', () => {
+      if (!userImage || !frameImage.complete) {
+        alert("Pastikan foto dan frame sudah dimuat.");
+        return;
+      }
+      draw();
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.download = 'twibbon.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }, 120);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      if (!confirm("Apakah Anda yakin ingin mereset? Semua perubahan foto akan hilang.")) {
+        return;
+      }
+      userImage = null;
+      scale = baseScale;
+      offsetX = 0;
+      offsetY = 0;
+      zoomSlider.value = scale;
+      zoomValueLabel.textContent = (scale / baseScale).toFixed(2);
+      upload.value = "";
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (frameImage.complete) {
+        ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
+      }
+    });
+
+    frameImage.onload = () => draw();
+    // Show pinch hint only on touch devices
+    if ('ontouchstart' in window) {
+      hintTouch.style.display = 'flex';
+    }
+  </script>
+  <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'95c1239babcfa3e3',t:'MTc1MTk5NDAzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
