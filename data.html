@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="https://afjhsbsd.my.id/favicon.png">
+  <title id="dynamic-title">Redirecting...</title>
+  <style>
+    body {
+      background: #18181b;
+      color: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .loader {
+      margin: 40px 0;
+      width: 48px;
+      height: 48px;
+      border: 6px solid #555;
+      border-top: 6px solid #38bdf8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin: 0 0 12px 0;
+      font-weight: 600;
+    }
+
+    p {
+      color: #9ca3af;
+      font-size: 1.1rem;
+      padding-left: 10%;
+      padding-right: 10%;
+    }
+
+    .bright-link {
+      color: #00ccff;
+      font-weight: bold;
+      text-decoration: underline;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+
+    .bright-link:hover {
+      color: #fff700;
+    }
+  </style>
+  <script>
+    const redirectUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRPhrKJPrgkU7ZdfYT6-Jw1SdFghzaooUI0tiCwINcufhBQgj58jO4vFB5Irqn6HKPZ3P0AmpvraR1Q/pub?output=csv";
+    document.addEventListener('DOMContentLoaded', function () {
+      var meta = document.createElement('meta');
+      meta.httpEquiv = "refresh";
+      meta.content = "0;url=" + redirectUrl;
+      document.getElementsByTagName('head')[0].appendChild(meta);
+
+      const link = document.getElementById('dynamic-link');
+      link.href = redirectUrl;
+
+      const userLang = navigator.language || navigator.userLanguage || '';
+      const h1 = document.getElementById('redirect-title');
+      const p = document.getElementById('redirect-desc');
+      const title = document.querySelector('title');
+      if (userLang.toLowerCase().startsWith('id')) {
+        document.documentElement.lang = 'id';
+        h1.textContent = 'Mengalihkan...';
+        p.childNodes[0].textContent = 'Anda akan diarahkan sebentar lagi. Jika tidak, ';
+        link.textContent = 'klik di sini';
+        title.textContent = 'Mengalihkan...';
+      } else {
+        document.documentElement.lang = 'en';
+        h1.textContent = 'Redirecting...';
+        p.childNodes[0].textContent = 'You will be redirected shortly. If not, ';
+        link.textContent = 'click here';
+        title.textContent = 'Redirecting...';
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <div class="loader"></div>
+  <h1 id="redirect-title">Redirecting...</h1>
+  <p id="redirect-desc">
+    You will be redirected shortly. If not,
+    <a href="#" class="bright-link" id="dynamic-link">click here</a>.
+  </p>
+</body>
+
+</html>
